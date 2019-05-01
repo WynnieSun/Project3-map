@@ -59,24 +59,39 @@ var drawMap = function(geoData)
 
           countries.append("path")
                    .attr("d",geoGenerator)
+                   .attr("id", function(d){
+                     return d.properties.SOVEREIGNT
+                   })
                    .attr("stroke","black")
                    .attr("fill",function(d){
-                     console.log(d)
-                     console.log(d.properties.data.LifeLadder);
+
                      if (d.properties.data.LifeLadder){
                        return color(d.properties.data.LifeLadder);
                      }
                      else{
                        return "#ccc";
                      }
-                   });
+                   })
+                   .on("mouseover", function(d){
+                     d3.select(this.parentNode)
+                       .append("text")
+                       .text(function(d){return d.properties.SOVEREIGNT})
+                       .attr("stroke","black")
+                       .attr("font-size","15px")
+                       .attr("x",function(d){
+                         return geoGenerator.centroid(d)[0]})
+                       .attr("y",function(d){
+                         return geoGenerator.centroid(d)[1]})
 
-                   countries.append("text")
-                   .attr("x",function(d){
-                     return geoGenerator.centroid(d)[0]})
-                   .attr("y",function(d){
-                     return geoGenerator.centroid(d)[1]})
-                  .text(function(d){return d.properties.ABBREV})
-                  .attr("font-size","4px")
+                 d3.select(this)
+                 .attr("fill","orange") //change color of area
+
+                .attr("stroke-width", 2)
+
+
+
+                  console.log(this);
+                })
+
 
 };
