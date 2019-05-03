@@ -53,7 +53,7 @@ Promise.all([map,data18,data17,data16,data15])
 
 //////////initial////////////
 var screen = {
-  width:1500,
+  width:1580,
   height:1000
 }
 ///////////svg///////////
