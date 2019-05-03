@@ -1,4 +1,4 @@
-﻿Country,Year,LifeLadder,Log GDP per capita,Social support,Healthy life expectancy at birth,Freedom to make life choices,Generosity,Perceptions of corruption,Positive affect,Negative affect,Confidence in national government,Democratic Quality,Delivery Quality
+﻿Country,Year,LifeLadder,Log_GDP_per_capita,Social support,Healthy life expectancy at birth,Freedom to make life choices,Generosity,Perceptions of corruption,Positive affect,Negative affect,Confidence in national government,Democratic Quality,Delivery Quality
 Afghanistan,2016,4.220168591,7.497038364,0.559071779,53,0.522566199,0.051364917,0.793245554,0.564952672,0.348332286,0.324989557,-1.855426311,-1.392712831
 Albania,2016,4.511100769,9.337532043,0.638411462,68.09999847,0.72981894,-0.020687405,0.901070774,0.675243735,0.321705997,0.400909811,0.257291853,-0.134950414
 Algeria,2016,5.340853691,9.541166306,0.748588264,65.5,,,,0.66051048,0.377111971,,-0.976651907,-0.815911233
