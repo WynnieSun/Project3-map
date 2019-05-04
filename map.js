@@ -3,9 +3,15 @@ var data18 = d3.csv("Happiness.csv");
 var data17 = d3.csv("Happiness2017.csv");
 var data16 = d3.csv("Happiness2016.csv");
 var data15 = d3.csv("Happiness2015.csv");
+var crime = d3.csv("Crime Index.csv");
+var un18 = d3.csv("unemR18.csv");
+var un17 = d3.csv("unemR17.csv");
+var un16 = d3.csv("unemR16.csv");
+var un15 = d3.csv("unemR15.csv");
+var location = d3.csv("location.csv");
 //console.log(data18);
 
-Promise.all([map,data18,data17,data16,data15])
+Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,location])
        .then(function(values)
        {
          //console.log(values);
@@ -14,7 +20,17 @@ Promise.all([map,data18,data17,data16,data15])
          var countries17 = values[2];
          var countries16 = values[3];
          var countries15 = values[4];
+         var crime = values[5];
+         var unem18 = values[6];
+         var unem17 = values[7];
+         var unem16 = values[8];
+         var unem15 = values[9];
+         var location = values[10];
          //console.log(geoData)
+         //console.log(unem16);
+
+//////////////dictionary///////////
+/////Happiness index
          var countryDict18 = {};
          countries18.forEach(function(country){
 
@@ -36,7 +52,36 @@ Promise.all([map,data18,data17,data16,data15])
 
            countryDict15[country.Country.trim()]=country;
          })
+//////////Unemployment rate
+         var unDict18 = {};
+         unem18.forEach(function(country){
+
+           unDict18[country.Country.trim()]=country;
+         });
+         var unDict17 = {};
+         unem17.forEach(function(country){
+
+           unDict17[country.Country.trim()]=country;
+         });
+         var unDict16 = {};
+         unem16.forEach(function(country){
+
+           unDict16[country.Country.trim()]=country;
+         });
+         var unDict15 = {};
+         unem15.forEach(function(country){
+
+           unDict15[country.Country.trim()]=country;
+         });
+
+//////////////location //////////
+var gpsDict= {};
+location.forEach(function(country){
+
+  gpsDict[country.name.trim()]=country;
+});
         // console.log(countryDict18)
+        //console.log(unDict15)
         //bind data with country info
           geoData.features.forEach(function(feature)
          {
@@ -44,6 +89,11 @@ Promise.all([map,data18,data17,data16,data15])
          feature.properties.data17 = countryDict17[feature.properties.SOVEREIGNT];
          feature.properties.data16 = countryDict16[feature.properties.SOVEREIGNT];
          feature.properties.data15 = countryDict15[feature.properties.SOVEREIGNT];
+         feature.properties.UR18 = unDict18[feature.properties.SOVEREIGNT];
+         feature.properties.UR17 = unDict17[feature.properties.SOVEREIGNT];
+         feature.properties.UR16 = unDict16[feature.properties.SOVEREIGNT];
+         feature.properties.UR15 = unDict15[feature.properties.SOVEREIGNT];
+         feature.properties.GPS = gpsDict[feature.properties.SOVEREIGNT];
          })
           console.log(geoData);
 
@@ -53,7 +103,7 @@ Promise.all([map,data18,data17,data16,data15])
 
 //////////initial////////////
 var screen = {
-  width:1580,
+  width:1500,
   height:1000
 }
 ///////////svg///////////
@@ -137,6 +187,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
 
 //////////draw area///////////////
 
+
   var countries = svg.append("g")
                    .attr("id","countries")
                    .selectAll("g")
@@ -217,6 +268,8 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   .attr("opacity",1)
                   .attr("stroke-width", 0.5);
              })
+
+///////////centroid///////////
              var triDataX = geoData.features.map(function(d){
                 return geoGenerator.centroid(d)[0] - 10})
              var triDataY = geoData.features.map(function(d){
@@ -291,6 +344,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
              			.duration(250)
              			.style("opacity", 0);
              		});
+
 ///////////main legend////////////////
 
         	legenditem.select("#mainR")
@@ -310,9 +364,11 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
 
 ///////////update///////////////
          var update = function(year){
+
                 	slider.property("value", year);
                   		d3.select(".year")
                         .text(year)
+
                   		drawMap(year,geoData);
                   	}
 
@@ -322,7 +378,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   			.attr("step", 1)
                   			.on("input", function() {
                   				var year = this.value;
-
+                        //    (".gdp").remove()
                   				update(year);
                   			});
 
@@ -359,9 +415,9 @@ var tooltipOther = d3.select("body")
       var triLegendColors = ["#d73027", "#f46d43", "#fdae61", "#fee090", "#ffffbf",
                         "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"];
 
-                          var group = svg.append('g')
-                                         .attr("id","gdp")
-                                         .classed("gdp",true);
+      var group = svg.append('g')
+                     .attr("id","gdp")
+                     .classed("gdp",true);
 
 /////////////variable - gdp//////////////
 /////15/////
@@ -623,5 +679,30 @@ var triData18 = geoData.features.map(function(d){
                                               		.style("text-anchor", "middle")
                                               		.text(function(d, i) { return triLegendText[i]; });
 
+/////////////////Unemployment Rate//////////////
+var groupUR = svg.append('g')
+                 .attr("id","unemployment")
+                 .classed("unemployment",true);
+
+groupUR.selectAll("circle")
+       .data(geoData.features)
+       .enter()
+       .append("circle")
+       .attr("cx",function(d,i){
+         return i*50
+       })
+       .attr("cy",function(d){
+         return 60
+       })
+       .attr("r", function(d){
+         if (d.properties.UR15.UnemploymentRate != "Undefined"){
+         return Math.sqrt(parseInt(d.properties.UR15.UnemploymentRate*10))}
+         else{
+           return 0
+         }
+       })
+       .attr("fill", "red")
+       .attr("opacity",0.3)
+//console.log(triDataX);
 
  };

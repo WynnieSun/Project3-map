@@ -1,0 +1,203 @@
+latitude,longitude,name,desc,color,source,precision
+33.8311386,66.0247116,Afghanistan,Afghanistan,,Bing Maps,country
+41.139286,20.0643139,Albania,Albania,,Bing Maps,country
+28.1550884,2.6787491,Algeria,Algeria,,Bing Maps,country
+42.5453033,1.576286,Andorra,Andorra,,Bing Maps,country
+-12.3329239,17.5728378,Angola,Angola,,Bing Maps,country
+-82.0142212,-20.5920849,Antarctica,Antarctica,,Bing Maps,Continent
+17.0776653,-61.7987099,Antigua and Barbuda,Antigua and Barbuda,,Bing Maps,country
+-35.1811485,-65.0938568,Argentina,Argentina,,Bing Maps,country
+40.2926445,44.939476,Armenia,Armenia,,Bing Maps,country
+-25.5789375,134.3597107,Australia,Australia,,Bing Maps,country
+47.5870857,14.1412859,Austria,Austria,,Bing Maps,country
+40.359642,47.652401,Azerbaijan,Azerbaijan,,Bing Maps,country
+26.0892467,50.5627747,Bahrain,Bahrain,,Bing Maps,country
+23.804884,90.279213,Bangladesh,Bangladesh,,Bing Maps,country
+13.1722221,-59.5564232,Barbados,Barbados,,Bing Maps,country
+53.5421982,28.0501232,Belarus,Belarus,,Bing Maps,country
+50.6411858,4.6605692,Belgium,Belgium,,Bing Maps,country
+17.2005539,-88.7070694,Belize,Belize,,Bing Maps,country
+9.656064,2.339582,Benin,Benin,,Bing Maps,country
+27.4168797,90.434761,Bhutan,Bhutan,,Bing Maps,country
+-16.7146473,-64.6577911,Bolivia,Bolivia,,Bing Maps,country
+44.1682549,17.7852497,Bosnia And Herzegovina,Bosnia and Herzegovina,,Bing Maps,country
+-22.1872425,23.8145447,Botswana,Botswana,,Bing Maps,country
+-10.7767973,-53.0680542,Brazil,Brazil,,Bing Maps,country
+4.4969049,114.6308365,Brunei,Brunei,,Bing Maps,country
+42.7570877,25.2387028,Bulgaria,Bulgaria,,Bing Maps,country
+12.2854481,-1.744179,Burkina Faso,Burkina Faso,,Bing Maps,country
+-3.367312,29.8881893,Burundi,Burundi,,Bing Maps,country
+12.7107716,104.9167862,Cambodia,Cambodia,,Bing Maps,country
+5.6971359,12.7423363,Cameroon,Cameroon,,Bing Maps,country
+62.5360413,-96.3883514,Canada,Canada,,Bing Maps,country
+15.0836287,-23.6246719,Cape Verde,Cape Verde,,Bing Maps,country
+6.5757499,20.4840908,Central African Republic,Central African Republic,,Bing Maps,country
+15.3684349,18.6671333,Chad,Chad,,Bing Maps,country
+-35.2320061,-71.2188263,Chile,Chile,,Bing Maps,country
+36.5631142,103.7358093,China,China,,Bing Maps,country
+3.9064491,-73.0750275,Colombia,Colombia,,Bing Maps,country
+-11.6625538,43.3542175,Comoros,Comoros,,Bing Maps,country
+9.9748354,-84.1938553,Costa Rica,Costa Rica,,Bing Maps,country
+45.1400681,16.4273033,Croatia,Croatia,,Bing Maps,country
+21.6105175,-78.9602737,Cuba,Cuba,,Bing Maps,country
+34.917408,32.9589119,Cyprus,Cyprus,,Bing Maps,country
+49.7391052,15.3315001,Czech Republic,Czech Republic,,Bing Maps,country
+-2.8785491,23.6566906,Democratic Republic of the Congo,Congo (DRC),,Bing Maps,country
+56.2622757,9.3363562,Denmark,Denmark,,Bing Maps,country
+11.7310925,42.5791054,Djibouti,Djibouti,,Bing Maps,country
+15.4346571,-61.3500748,Dominica,Dominica,,Bing Maps,country
+18.8973312,-70.499939,Dominican Republic,Dominican Republic,,Bing Maps,country
+-8.7974224,125.9454117,East Timor,Timor-Leste,,Bing Maps,country
+-1.46557,-78.3972092,Ecuador,Ecuador,,Bing Maps,country
+26.5784569,29.7768764,Egypt,Egypt,,Bing Maps,country
+13.7330055,-88.8665009,El Salvador,El Salvador,,Bing Maps,country
+1.5670069,10.4658899,Equatorial Guinea,Equatorial Guinea,,Bing Maps,country
+15.3599453,38.8456802,Eritrea,Eritrea,,Bing Maps,country
+58.68367,25.8387012,Estonia,Estonia,,Bing Maps,country
+8.6224842,39.6343117,Ethiopia,Ethiopia,,Bing Maps,country
+6.8803821,158.2275238,Federated States of Micronesia,Federated States of Micronesia,,Bing Maps,country
+-17.8354149,177.9633484,Fiji,Fiji,,Bing Maps,country
+64.5198898,26.2829971,Finland,Finland,,Bing Maps,country
+46.6218414,2.4519441,France,France,,Bing Maps,country
+-0.623825,11.7815332,Gabon,Gabon,,Bing Maps,country
+13.4469719,-15.4227686,Gambia,The Gambia,,Bing Maps,country
+32.6483307,-83.4445572,Georgia,Georgia,,Bing Maps,state/province
+51.1218071,10.4006948,Germany,Germany,,Bing Maps,country
+7.9606738,-1.207611,Ghana,Ghana,,Bing Maps,country
+39.3474426,22.5712719,Greece,Greece,,Bing Maps,country
+12.1138401,-61.683754,Grenada,Grenada,,Bing Maps,country
+15.6961079,-90.3570938,Guatemala,Guatemala,,Bing Maps,country
+10.4370613,-10.9349689,Guinea,Guinea,,Bing Maps,country
+12.0376902,-14.9580021,Guinea Bissau,Guinea-Bissau,,Bing Maps,country
+4.9783878,-59.0884552,Guyana,Guyana,,Bing Maps,country
+18.9335175,-72.6745911,Haiti,Haiti,,Bing Maps,country
+14.8238182,-86.5975418,Honduras,Honduras,,Bing Maps,country
+22.3330803,114.1912231,Hong Kong S.A.R. of China,Hong Kong SAR,,Bing Maps,country
+47.1651917,19.4120445,Hungary,Hungary,,Bing Maps,country
+64.9836426,-18.5770988,Iceland,Iceland,,Bing Maps,country
+22.4931183,79.7270126,India,India,,Bing Maps,country
+-0.210123,113.9972305,Indonesia,Indonesia,,Bing Maps,country
+32.5642624,54.3036728,Iran,Iran,,Bing Maps,country
+33.0444298,43.7751846,Iraq,Iraq,,Bing Maps,country
+53.1849861,-8.1468897,Ireland,Ireland,,Bing Maps,country
+31.046051,34.851612,Israel,Israel,,Bing Maps,country
+43.5290298,12.1621838,Italy,Italy,,Bing Maps,country
+7.6228418,-5.5525599,Ivory Coast,Côte d'Ivoire,,Bing Maps,country
+18.2360001,-77.3639984,Jamaica,Jamaica,,Bing Maps,country
+36.6533356,137.9816895,Japan,Japan,,Bing Maps,country
+31.2481918,36.7881012,Jordan,Jordan,,Bing Maps,country
+33.778175,76.576172,Kashmir,"Kashmir, India",,Bing Maps,GeoRegion
+48.1601067,67.2660828,Kazakhstan,Kazakhstan,,Bing Maps,country
+0.537028,37.8567772,Kenya,Kenya,,Bing Maps,country
+1.848904,-157.3562775,Kiribati,Kiribati,,Bing Maps,country
+42.5814857,20.8915749,Kosovo,Kosovo,,Bing Maps,country
+29.3358822,47.5954933,Kuwait,Kuwait,,Bing Maps,country
+41.4642677,74.5556488,Kyrgyzstan,Kyrgyzstan,,Bing Maps,country
+18.4955578,103.7679596,Laos,Laos,,Bing Maps,country
+56.853981,24.9274597,Latvia,Latvia,,Bing Maps,country
+33.9277344,35.7372856,Lebanon,Lebanon,,Bing Maps,country
+-29.5821228,28.2468758,Lesotho,Lesotho,,Bing Maps,country
+6.4475222,-9.3111792,Liberia,Liberia,,Bing Maps,country
+27.0418282,18.0308189,Libya,Libya,,Bing Maps,country
+47.1412697,9.552783,Liechtenstein,Liechtenstein,,Bing Maps,country
+55.3373108,23.8835449,Lithuania,Lithuania,,Bing Maps,country
+49.776825,6.0923409,Luxembourg,Luxembourg,,Bing Maps,country
+41.6004639,21.7008896,Macedonia,North Macedonia,,Bing Maps,country
+-19.3828773,46.6958504,Madagascar,Madagascar,,Bing Maps,country
+-13.3602753,34.293045,Malawi,Malawi,,Bing Maps,country
+3.605468,114.7107239,Malaysia,Malaysia,,Bing Maps,country
+1.912307,73.5400925,Maldives,Maldives,,Bing Maps,country
+17.3576393,-3.524879,Mali,Mali,,Bing Maps,country
+35.8905563,14.4395361,Malta,Malta,,Bing Maps,country
+7.1649799,171.0388184,Marshall Islands,Marshall Islands,,Bing Maps,country
+20.258419,-10.3319387,Mauritania,Mauritania,,Bing Maps,country
+-20.283556,57.5718155,Mauritius,Mauritius,,Bing Maps,country
+23.9406204,-102.5251389,Mexico,Mexico,,Bing Maps,country
+47.2021446,28.4654484,Moldova,Moldova,,Bing Maps,country
+43.7363052,7.4233141,Monaco,Monaco,,Bing Maps,country
+46.8346901,103.0676346,Mongolia,Mongolia,,Bing Maps,country
+42.7850952,19.2489796,Montenegro,Montenegro,,Bing Maps,country
+31.8413982,-6.2813091,Morocco,Morocco,,Bing Maps,country
+-17.2731991,35.5474854,Mozambique,Mozambique,,Bing Maps,country
+21.1851463,96.5192032,Myanmar,Myanmar,,Bing Maps,country
+-22.1394424,17.2217979,Namibia,Namibia,,Bing Maps,country
+-0.528541,166.9341888,Nauru,Nauru,,Bing Maps,country
+28.2591381,83.9441605,Nepal,Nepal,,Bing Maps,country
+52.3422585,5.5281572,Netherlands,Netherlands,,Bing Maps,country
+-43.9476357,170.5028687,New Zealand,New Zealand,,Bing Maps,country
+12.8441591,-85.0319672,Nicaragua,Nicaragua,,Bing Maps,country
+17.4205818,9.4003925,Niger,Niger,,Bing Maps,country
+9.585454,8.0935783,Nigeria,Nigeria,,Bing Maps,country
+40.1441498,127.1733704,North Korea,North Korea,,Bing Maps,country
+34.917408,32.9589119,Northern Cyprus,Cyprus,,Bing Maps,country
+64.2389297,13.9506321,Norway,Norway,,Bing Maps,country
+20.5696144,56.0980759,Oman,Oman,,Bing Maps,country
+29.3542023,68.8018341,Pakistan,Pakistan,,Bing Maps,country
+7.4991469,134.565033,Palau,Palau,,Bing Maps,country
+31.7616997,-95.6320038,Palestine,"Palestine, TX",,Bing Maps,city/town
+8.5310392,-80.1344986,Panama,Panama,,Bing Maps,country
+-6.613677,144.2614441,Papua New Guinea,Papua New Guinea,,Bing Maps,country
+-23.2419586,-58.392765,Paraguay,Paraguay,,Bing Maps,country
+-9.1712427,-74.3568802,Peru,Peru,,Bing Maps,country
+15.9480419,121.4225998,Philippines,Philippines,,Bing Maps,country
+52.1290398,19.3937016,Poland,Poland,,Bing Maps,country
+39.6799088,-7.9686651,Portugal,Portugal,,Bing Maps,country
+25.2853317,51.1932526,Qatar,Qatar,,Bing Maps,country
+44.230854,20.793766,Republic of Serbia,Serbia,,Bing Maps,country
+-0.82734,15.241457,Republic of the Congo,Republic of the Congo,,Bing Maps,country
+45.8391304,24.9846535,Romania,Romania,,Bing Maps,country
+61.7601929,99.8768463,Russia,Russia,,Bing Maps,country
+-1.99999,29.9260597,Rwanda,Rwanda,,Bing Maps,country
+17.3397121,-62.7656021,Saint Kitts and Nevis,St Kitts and Nevis,,Bing Maps,country
+13.8985481,-60.967308,Saint Lucia,St Lucia,,Bing Maps,country
+13.2514782,-61.1891365,Saint Vincent and the Grenadines,St Vincent and the Grenadines,,Bing Maps,country
+-13.6208124,-172.4473267,Samoa,Samoa,,Bing Maps,country
+43.9381332,12.4633932,San Marino,San Marino,,Bing Maps,country
+0.239311,6.6020598,Sao Tome and Principe,São Tomé and Príncipe,,Bing Maps,country
+24.1241207,44.5504951,Saudi Arabia,Saudi Arabia,,Bing Maps,country
+14.3596144,-14.4684591,Senegal,Senegal,,Bing Maps,country
+-4.678658,55.4672966,Seychelles,Seychelles,,Bing Maps,country
+8.5489674,-11.8041754,Sierra Leone,Sierra Leone,,Bing Maps,country
+1.29018,103.8519897,Singapore,"Singapore, Singapore",,Bing Maps,city/town
+48.7074852,19.4848766,Slovakia,Slovakia,,Bing Maps,country
+46.1195564,14.8217602,Slovenia,Slovenia,,Bing Maps,country
+-9.6228037,160.1602936,Solomon Islands,Solomon Islands,,Bing Maps,country
+6.5336452,48.0761719,Somalia,Somalia,,Bing Maps,country
+9.862669,46.136112,Somaliland,-,,Bing Maps,
+-29.0023117,25.0803223,South Africa,South Africa,,Bing Maps,country
+36.4511566,127.861145,South Korea,South Korea,,Bing Maps,country
+7.2835488,30.3261356,South Sudan,South Sudan,,Bing Maps,country
+40.3876953,-3.5573909,Spain,Spain,,Bing Maps,country
+7.641645,80.6919785,Sri Lanka,Sri Lanka,,Bing Maps,country
+15.983182,29.949295,Sudan,Sudan,,Bing Maps,country
+4.13907,-55.9113274,Suriname,Suriname,,Bing Maps,country
+-26.5652199,31.4981174,Swaziland,Swaziland,,Bing Maps,country
+62.8217926,16.7353859,Sweden,Sweden,,Bing Maps,country
+46.800209,8.2291985,Switzerland,Switzerland,,Bing Maps,country
+35.0248184,38.5218506,Syria,Syria,,Bing Maps,country
+36.5631142,103.7358093,Taiwan Province of China,China,,Bing Maps,country
+38.5251312,71.0388107,Tajikistan,Tajikistan,,Bing Maps,country
+15.1306734,101.0177841,Thailand,Thailand,,Bing Maps,country
+24.6795368,-78.0550003,The Bahamas,The Bahamas,,Bing Maps,country
+8.5307598,0.976809,Togo,Togo,,Bing Maps,country
+-21.1739311,-175.1920471,Tonga,Tonga,,Bing Maps,country
+10.4237452,-61.2965317,Trinidad And Tobago,Trinidad and Tobago,,Bing Maps,country
+34.1144638,9.5719872,Tunisia,Tunisia,,Bing Maps,country
+39.0510101,34.9303398,Turkey,Turkey,,Bing Maps,country
+39.1941376,59.1786537,Turkmenistan,Turkmenistan,,Bing Maps,country
+1.277275,32.3897018,Uganda,Uganda,,Bing Maps,country
+49.1602936,31.2781219,Ukraine,Ukraine,,Bing Maps,country
+23.9071827,54.3335342,United Arab Emirates,United Arab Emirates,,Bing Maps,country
+53.9438362,-2.5505641,United Kingdom,United Kingdom,,Bing Maps,country
+-6.2675452,34.8109589,United Republic of Tanzania,Tanzania,,Bing Maps,country
+39.4959145,-98.9899826,United States of America,United States,,Bing Maps,country
+-32.969738,-56.0560646,Uruguay,Uruguay,,Bing Maps,country
+41.7634926,63.1515236,Uzbekistan,Uzbekistan,,Bing Maps,country
+-15.2413559,166.872757,Vanuatu,Vanuatu,,Bing Maps,country
+41.9024582,12.4583902,Vatican,"Vatican City, Vatican City",,Bing Maps,city/town
+7.1569848,-66.2232437,Venezuela,Venezuela,,Bing Maps,country
+16.1676922,107.8390503,Vietnam,Vietnam,,Bing Maps,country
+24.6585026,-13.1394863,Western Sahara,Western Sahara,,Bing Maps,state/province
+15.9345541,47.5468559,Yemen,Yemen,,Bing Maps,country
+-13.4631281,27.7873898,Zambia,Zambia,,Bing Maps,country
+-19.0004578,29.8718376,Zimbabwe,Zimbabwe,,Bing Maps,country
