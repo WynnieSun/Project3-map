@@ -8,10 +8,10 @@ var un18 = d3.csv("unemR18.csv");
 var un17 = d3.csv("unemR17.csv");
 var un16 = d3.csv("unemR16.csv");
 var un15 = d3.csv("unemR15.csv");
-var location = d3.csv("location.csv");
+var gps = d3.csv("GPS.csv");
 //console.log(data18);
 
-Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,location])
+Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,gps])
        .then(function(values)
        {
          //console.log(values);
@@ -25,7 +25,7 @@ Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,location]
          var unem17 = values[7];
          var unem16 = values[8];
          var unem15 = values[9];
-         var location = values[10];
+         var gps = values[10];
          //console.log(geoData)
          //console.log(unem16);
 
@@ -52,7 +52,8 @@ Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,location]
 
            countryDict15[country.Country.trim()]=country;
          })
-//////////Unemployment rate
+
+//////////Unemployment rate////////////////
          var unDict18 = {};
          unem18.forEach(function(country){
 
@@ -74,12 +75,19 @@ Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,location]
            unDict15[country.Country.trim()]=country;
          });
 
-//////////////location //////////
+//////////////gps/////////////
 var gpsDict= {};
-location.forEach(function(country){
-
+gps.forEach(function(country){
   gpsDict[country.name.trim()]=country;
 });
+
+////////////Crime Index///////
+var crimeDict= {};
+crime.forEach(function(country){
+  crimeDict[country.Country.trim()]=country;
+});
+        //console.log(crimeDict);
+        //console.log(gpsDict)
         // console.log(countryDict18)
         //console.log(unDict15)
         //bind data with country info
@@ -94,8 +102,9 @@ location.forEach(function(country){
          feature.properties.UR16 = unDict16[feature.properties.SOVEREIGNT];
          feature.properties.UR15 = unDict15[feature.properties.SOVEREIGNT];
          feature.properties.GPS = gpsDict[feature.properties.SOVEREIGNT];
+         feature.properties.crime = crimeDict[feature.properties.SOVEREIGNT];
          })
-          console.log(geoData);
+        console.log(geoData);
 
         drawMap(2015,geoData);
 
@@ -121,10 +130,16 @@ var slider = d3.select(".slider")
                .property("value", 2015);
              d3.select(".year")
                .text(2015)
+
 //////////////main legend//////////
                var legend = svg.append("g")
                      		.attr("id", "mainlegend")
-                        .attr("transform","translate(280,-15)")
+                        .attr("transform","translate(280,20)")
+                  legend.append("g")
+                        .append("text")
+                        .text("Happiness Index")
+                        .attr("font-size","20px")
+                        .attr("transform","translate(1260,-5)")
 
              	var legenditem = legend.selectAll(".legenditem")
                      		.data(d3.range(14))
@@ -144,7 +159,12 @@ var triLegend = svg.append("g")
           .attr("id", "trilegend")
           .attr("transform","translate(0,-15)")
 
-////////////interactive legend////////
+///////////diaLegend////////
+var diaLegend = svg.append("g")
+          .attr("id", "dialegend")
+          .attr("transform","translate(0,-15)")
+
+////////////interactive legend - ur////////
 var inter_tri = svg.append("g")
                    .attr("transform","translate(690,5)")
     inter_tri.attr("class","inter_tri")
@@ -153,12 +173,61 @@ var inter_tri = svg.append("g")
           .attr("y",85)
           .attr("width",20)
           .attr("height",20)
-          .attr("fill","#ecbd8b")
+          .attr("fill","#b8e186")
     inter_tri.append("text")
           .text( "Log GDP per Capita")
           .attr("x",890)
           .attr("y",100)
           .attr("font-size","20px")
+
+////////////interactive legend - dia////////
+var inter_dia = svg.append("g")
+                   .attr("transform","translate(690,5)")
+    inter_dia.attr("class","inter_dia")
+          .append("rect")
+          .attr("x",850)
+          .attr("y",180)
+          .attr("width",20)
+          .attr("height",20)
+          .attr("fill","#92c5de")
+    inter_dia.append("text")
+          .text( "Healthy life expectancy at birth")
+          .attr("x",890)
+          .attr("y",200)
+          .attr("font-size","20px")
+
+///////////interactive legend - ur/////////
+var inter_ur= svg.append("g")
+                   .attr("transform","translate(690,5)")
+    inter_ur.attr("class","inter_ur")
+          .append("rect")
+          .attr("x",850)
+          .attr("y",285)
+          .attr("width",20)
+          .attr("height",20)
+          .attr("fill","orange")
+    inter_ur.append("text")
+          .text( "Unemployment Rate")
+          .attr("x",890)
+          .attr("y",305)
+          .attr("font-size","20px")
+
+////////////interactive legend - ci///////
+var inter_ci= svg.append("g")
+                   .attr("transform","translate(690,5)")
+    inter_ci.attr("class","inter_ci")
+          .append("rect")
+          .attr("x",850)
+          .attr("y",345)
+          .attr("width",20)
+          .attr("height",20)
+          .attr("fill","red")
+    inter_ci.append("text")
+          .text( "Crime Index")
+          .attr("x",890)
+          .attr("y",365)
+          .attr("font-size","20px")
+
 
 ///////////function draw map////////
 var drawMap = function(year,geoData)
@@ -195,7 +264,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                    .enter()
                    .append("g")
                    .attr("transform","translate(-80,60)")
-                   .attr('transform', "translate("+(10)+","+(-20)+")")
+                   .attr('transform', "translate("+(20)+","+(-20)+")")
 
           countries.append("path")
                    .attr("d",geoGenerator)
@@ -368,6 +437,8 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                 	slider.property("value", year);
                   		d3.select(".year")
                         .text(year)
+//d3.select(".gdp").remove()
+//(".unemployment").remove()
 
                   		drawMap(year,geoData);
                   	}
@@ -378,7 +449,8 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   			.attr("step", 1)
                   			.on("input", function() {
                   				var year = this.value;
-                        //    (".gdp").remove()
+
+                        //(".unemployment").remove()
                   				update(year);
                   			});
 
@@ -399,7 +471,7 @@ var tooltipOther = d3.select("body")
 
                     var triangle = d3.symbol()
                                 .type(d3.symbolTriangle)
-                                .size(function(d){ return scale(d.properties.dataGDP15.gdp); });
+                                .size([50])//function(d){ return scale(d.properties.dataGDP15.gdp); });
 
                     var scale = d3.scaleLinear()
                                   .domain([1,242])
@@ -499,7 +571,7 @@ var triData18 = geoData.features.map(function(d){
                            feature.properties.dataGDP15 = gdpDict15[feature.properties.SOVEREIGNT];
                            })
 
-                           console.log(geoData);
+                           //console.log(geoData);
                            console.log(year);
 
                           var line = group.selectAll('path')
@@ -541,7 +613,7 @@ var triData18 = geoData.features.map(function(d){
                               })
                               .attr('stroke','#000')
                               .attr('stroke-width',1)
-                              .attr('transform',function(d,i){ return "translate("+(triDataX[i]+20)+","+(triDataY[i]-25)+")"; })
+                              .attr('transform',function(d,i){ return "translate("+(triDataX[i]+35)+","+(triDataY[i]-25)+")"; })
                               // .on("mouseover", function(d){
                               //   d3.select(this.parentNode)
                               //   console.log(this.parentNode)
@@ -680,6 +752,11 @@ var triData18 = geoData.features.map(function(d){
                                               		.text(function(d, i) { return triLegendText[i]; });
 
 /////////////////Unemployment Rate//////////////
+var tooltipOther2 = d3.select("body")
+                .append("div")
+               	.attr("class", "tooltipOther2")
+             	  .style("opacity", 0);
+
 var groupUR = svg.append('g')
                  .attr("id","unemployment")
                  .classed("unemployment",true);
@@ -688,21 +765,444 @@ groupUR.selectAll("circle")
        .data(geoData.features)
        .enter()
        .append("circle")
-       .attr("cx",function(d,i){
-         return i*50
+       .attr("cx",function(d){
+         //console.log(d.properties);
+         //console.log(d.properties.GPS.longitude);
+         return (d.properties.GPS.longitude*0.08) //* 4.2) //zhai
        })
        .attr("cy",function(d){
-         return 60
+         return -(d.properties.GPS.latitude*0.15) //* 5.5) //gao
        })
        .attr("r", function(d){
+         if (year == 2015){
          if (d.properties.UR15.UnemploymentRate != "Undefined"){
-         return Math.sqrt(parseInt(d.properties.UR15.UnemploymentRate*10))}
+         return Math.sqrt(parseInt(d.properties.UR15.UnemploymentRate*20))}
          else{
            return 0
          }
+       }
+       else if (year == 2016){
+       if (d.properties.UR16.UnemploymentRate != "Undefined"){
+       return Math.sqrt(parseInt(d.properties.UR16.UnemploymentRate*20))}
+       else{
+         return 0
+       }
+     }
+     else if (year == 2017){
+     if (d.properties.UR17.UnemploymentRate != "Undefined"){
+     return Math.sqrt(parseInt(d.properties.UR17.UnemploymentRate*20))}
+     else{
+       return 0
+     }
+   }
+   else{
+   if (d.properties.UR18.UnemploymentRate != "Undefined"){
+   return Math.sqrt(parseInt(d.properties.UR18.UnemploymentRate*20))}
+   else{
+     return 0
+   }
+ }
+       })
+       .attr("fill", "orange")
+       .attr("opacity",0.5)
+//       .attr("transform","translate(760,475)")
+       .attr('transform',function(d,i){ return "translate("+(triDataX[i]+35)+","+(triDataY[i]-25)+")"; })
+
+       .on("mouseover", function(d){
+         //console.log(d.properties.GPS)
+              tooltipOther2.transition()
+                           .duration(250)
+                           .style("opacity", 1);
+                     if (year == 2015){
+                         if (d.properties.UR15.UnemploymentRate == "Undefined"){
+                           var ur = "Undefined"
+                         }
+                         else{
+                         var ur = d.properties.UR15.UnemploymentRate
+                       }
+
+                          tooltipOther2.html(
+                          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                          "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                       )}
+                       else if (year == 2016){
+                           if (d.properties.UR16.UnemploymentRate == "Undefined"){
+                             var ur = "Undefined"
+                           }
+                           else{
+                           var ur = d.properties.UR16.UnemploymentRate
+                         }
+
+                            tooltipOther2.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                         )}
+                         else if (year == 2017){
+                             if (d.properties.UR17.UnemploymentRate == "Undefined"){
+                               var ur = "Undefined"
+                             }
+                             else{
+                             var ur = d.properties.UR17.UnemploymentRate
+                           }
+
+                              tooltipOther2.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                           )}
+                           else{
+                               if (d.properties.UR18.UnemploymentRate == "Undefined"){
+                                 var ur = "Undefined"
+                               }
+                               else{
+                               var ur = d.properties.UR18.UnemploymentRate
+                             }
+
+                                tooltipOther2.html(
+                                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                                "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                             )}
+
+                        tooltipOther2.style("left", (50) + "px")
+                          			     .style("top", (650) + "px");
+
+       })
+       .on("mouseout", function(d) {
+             tooltipOther2.transition()
+                    			.duration(250)
+                    			.style("opacity", 0);
+                    		});
+
+///////UR////////
+inter_ur.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_ur").style("opacity")
+       currentOpacity = d3.selectAll(".unemployment").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".unemployment").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_ur").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+            })
+
+///////////////crime index//////////
+var tooltipOther3 = d3.select("body")
+                .append("div")
+               	.attr("class", "tooltipOther3")
+             	  .style("opacity", 0);
+
+var groupCI = svg.append('g')
+                 .attr("id","crime")
+                 .classed("crime",true);
+
+groupCI.selectAll("circle")
+       .data(geoData.features)
+       .enter()
+       .append("circle")
+       .attr("cx",function(d){
+         //console.log(d.properties);
+         //console.log(d.properties.GPS.longitude);
+         return (d.properties.GPS.longitude*0.08) //* 4.2) //zhai
+       })
+       .attr("cy",function(d){
+         return -(d.properties.GPS.latitude*0.15) //* 5.5) //gao
+       })
+       .attr("r", function(d){
+         if (year == 2015){
+         if (d.properties.crime.CrimeIndex_15 != "Undefined"){
+         return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_15*5))}
+         else{
+           return 0
+         }
+       }
+       else if (year == 2016){
+       if (d.properties.crime.CrimeIndex_16 != "Undefined"){
+       return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_16*5))}
+       else{
+         return 0
+       }
+     }
+     else if (year == 2017){
+     if (d.properties.crime.CrimeIndex_17 != "Undefined"){
+     return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_17*5))}
+     else{
+       return 0
+     }
+   }
+   else{
+   if (d.properties.crime.CrimeIndex_18 != "Undefined"){
+   return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_18*5))}
+   else{
+     return 0
+   }
+ }
        })
        .attr("fill", "red")
-       .attr("opacity",0.3)
-//console.log(triDataX);
+       .attr("opacity",0.5)
+//       .attr("transform","translate(760,475)")
+       .attr('transform',function(d,i){ return "translate("+(triDataX[i]+10)+","+(triDataY[i]-10)+")"; })
+
+       .on("mouseover", function(d){
+         //console.log(d.properties.GPS)
+              tooltipOther3.transition()
+                           .duration(250)
+                           .style("opacity", 1);
+                     if (year == 2015){
+                         if (d.properties.crime.CrimeIndex_15 == "Undefined"){
+                           var ci = "Undefined"
+                         }
+                         else{
+                         var ci = d.properties.crime.CrimeIndex_15
+                       }
+
+                          tooltipOther3.html(
+                          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                          "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                       )}
+                       else if (year == 2016){
+                           if (d.properties.crime.CrimeIndex_16 == "Undefined"){
+                             var ci = "Undefined"
+                           }
+                           else{
+                           var ci = d.properties.crime.CrimeIndex_16
+                         }
+
+                            tooltipOther3.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                         )}
+                         else if (year == 2017){
+                             if (d.properties.crime.CrimeIndex_17 == "Undefined"){
+                               var ci = "Undefined"
+                             }
+                             else{
+                             var ci = d.properties.crime.CrimeIndex_17
+                           }
+
+                              tooltipOther3.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                           )}
+                           else{
+                               if (d.properties.crime.CrimeIndex_18 == "Undefined"){
+                                 var ci = "Undefined"
+                               }
+                               else{
+                               var ci = d.properties.crime.CrimeIndex_18
+                             }
+
+                                tooltipOther3.html(
+                                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                                "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                             )}
+
+                        tooltipOther3.style("left", (50) + "px")
+                          			     .style("top", (650) + "px");
+
+       })
+       .on("mouseout", function(d) {
+             tooltipOther3.transition()
+                    			.duration(250)
+                    			.style("opacity", 0);
+                    		});
+/////////Crime Index///////////
+////////////////GDP///////////////
+inter_ci.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_ci").style("opacity")
+       currentOpacity = d3.selectAll(".crime").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".crime").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_ci").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+            })
+
+/////////////life expectancy////////
+var tooltipOther4 = d3.select("body")
+                .append("div")
+                .attr("class","tooltipOther4")
+             	  .style("opacity", 0);
+
+var diamond = d3.symbol()
+            .type(d3.symbolDiamond)
+            .size([50])//function(d){ return scale(d.properties.data15.Healthy_life_expectancy_at_birth); });
+
+var scale2 = d3.scaleLinear()
+              .domain([1,242])
+              .range([10,900]);
+
+var diaColors = d3.scaleThreshold()
+    .domain([30,35,40,45,50,55,60,65,70,75,80])
+    .range([ "#f46d43", "#fdae61", "#fee090", "#ffffbf",
+    "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"]);
+
+var diaLegendText = [30,35,40,45,50,55,60,65,70,75,80];
+
+var diaLegendColors = ["#f46d43", "#fdae61", "#fee090", "#ffffbf",
+    "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"];
+
+var group2 = svg.append('g')
+ .attr("id","lifeE")
+ .classed("lifeE",true);
+
+///////////////draw diamond////////
+var line2 = group2.selectAll('path')
+    .data(geoData.features)
+    .enter()
+    .append('path')
+    .attr('d', diamond)
+    .attr("opacity",1)
+    .attr('fill',function(d){
+      if(year == 2015){
+      if (d.properties.data15.Healthy_life_expectancy_at_birth == ""){
+        return "#ccc"
+      }
+      else{
+      return diaColors(d.properties.data15.Healthy_life_expectancy_at_birth)}
+    }
+    else if(year == 2016){
+    if (d.properties.data16.Healthy_life_expectancy_at_birth == ""){
+      return "#ccc"
+    }
+    else{
+    return diaColors(d.properties.data16.Healthy_life_expectancy_at_birth)}
+  }
+  else if(year == 2017){
+  if (d.properties.data17.Healthy_life_expectancy_at_birth == ""){
+    return "#ccc"
+  }
+  else{
+  return diaColors(d.properties.data17.Healthy_life_expectancy_at_birth)}
+}
+else{
+if (d.properties.data18.Healthy_life_expectancy_at_birth == ""){
+  return "#ccc"
+}
+else{
+return diaColors(d.properties.data18.Healthy_life_expectancy_at_birth)}
+}
+    })
+    .attr('stroke','#000')
+    .attr('stroke-width',1)
+    .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-30)+")"; })
+
+    .on("mouseover", function(d) {
+      tooltipOther4.transition()
+             			 .duration(250)
+             			 .style("opacity", 1);
+              if (year == 2018){
+                  if (d.properties.data18.Healthy_life_expectancy_at_birth == ""){
+                    var life = "Undefined"
+                  }
+                  else{
+                  var life = parseFloat(d.properties.data18.Healthy_life_expectancy_at_birth).toFixed(1)
+                }
+
+             			tooltipOther4.html(
+             			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                  "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+             			"<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+                )}
+              else if (year == 2017){
+                if (d.properties.data17.Healthy_life_expectancy_at_birth == ""){
+                  var life = "Undefined"
+                }
+                else{
+                var life = parseFloat(d.properties.data17.Healthy_life_expectancy_at_birth).toFixed(1)
+                }
+
+                tooltipOther4.html(
+                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+              )}
+            else if (year == 2016){
+              if (d.properties.data16.Healthy_life_expectancy_at_birth == ""){
+                var life = "Undefined"
+              }
+              else{
+              var life = parseFloat(d.properties.data16.Healthy_life_expectancy_at_birth).toFixed(1)
+              }
+
+              tooltipOther4.html(
+              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+              "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+              "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+            )}
+          else {
+            if (d.properties.data15.Healthy_life_expectancy_at_birth == ""){
+              var life = "Undefined"
+            }
+            else{
+            var life = parseFloat(d.properties.data15.Healthy_life_expectancy_at_birth).toFixed(1)
+            }
+
+            tooltipOther4.html(
+            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+            "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+            "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+          )}
+
+              	tooltipOther4.style("left", (50) + "px")
+             			          .style("top", (650) + "px");
+        	})
+
+
+  .on("mouseout", function(d) {
+      tooltipOther4.transition()
+             			.duration(250)
+             			.style("opacity", 0);
+             		});
+
+///////////dialegend////////////////
+	var diaLegenditem = diaLegend.selectAll(".dialegenditem")
+                               .data(d3.range(11))
+                               .enter()
+                               .append("g")
+                               .attr("class", "dialegenditem")
+                               .attr("transform", function(d, i) { return "translate(" + (i * 31 + 700) + ",0)"; });
+
+
+                        var dia = d3.symbol()
+                                    .type(d3.symbolDiamond)
+                                    .size(function(d){ return scale(d); });
+
+                        var dataDiaLegend = [1,1,1,1,1,1,1,1,1,1,1];
+
+                        var scale = d3.scaleLinear()
+                                      .domain([1,6])
+                                      .range([100,1000]);
+
+                        var group = svg.append('g')
+                                       .attr('transform','translate('+ 200 +','+ 300 +')');
+
+                        var line = group.selectAll('path')
+                                        .data(dataDiaLegend)
+                                        .enter()
+                                        .append('path')
+                                        .attr('d',dia)
+                                        .attr('fill',function(d, i) { return diaLegendColors[i]; })
+                                        .attr('stroke','#000')
+                                        .attr('stroke-width',1)
+                                        .attr('transform',function(d,i){ return "translate("+(i*31+1355)+","+(-40)+")"; });
+
+
+                                 diaLegenditem.append("text")
+                                              .attr("x", 840)
+                                          		.attr("y", 260)
+                                          		.style("text-anchor", "middle")
+                                          		.text(function(d, i) { return diaLegendText[i]; });
+
+///////life expectancy////////
+inter_dia.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_dia").style("opacity")
+       currentOpacity = d3.selectAll(".lifeE").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".lifeE").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_dia").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+            })
+
 
  };

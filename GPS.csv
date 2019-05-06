@@ -20,7 +20,7 @@ latitude,longitude,name,desc,color,source,precision
 9.656064,2.339582,Benin,Benin,,Bing Maps,country
 27.4168797,90.434761,Bhutan,Bhutan,,Bing Maps,country
 -16.7146473,-64.6577911,Bolivia,Bolivia,,Bing Maps,country
-44.1682549,17.7852497,Bosnia And Herzegovina,Bosnia and Herzegovina,,Bing Maps,country
+44.1682549,17.7852497,Bosnia and Herzegovina,Bosnia and Herzegovina,,Bing Maps,country
 -22.1872425,23.8145447,Botswana,Botswana,,Bing Maps,country
 -10.7767973,-53.0680542,Brazil,Brazil,,Bing Maps,country
 4.4969049,114.6308365,Brunei,Brunei,,Bing Maps,country
@@ -134,7 +134,7 @@ latitude,longitude,name,desc,color,source,precision
 20.5696144,56.0980759,Oman,Oman,,Bing Maps,country
 29.3542023,68.8018341,Pakistan,Pakistan,,Bing Maps,country
 7.4991469,134.565033,Palau,Palau,,Bing Maps,country
-31.7616997,-95.6320038,Palestine,"Palestine, TX",,Bing Maps,city/town
+31.88333,35.2,Palestine,Palestine,,Bing Maps,city/town
 8.5310392,-80.1344986,Panama,Panama,,Bing Maps,country
 -6.613677,144.2614441,Papua New Guinea,Papua New Guinea,,Bing Maps,country
 -23.2419586,-58.392765,Paraguay,Paraguay,,Bing Maps,country
@@ -181,7 +181,7 @@ latitude,longitude,name,desc,color,source,precision
 24.6795368,-78.0550003,The Bahamas,The Bahamas,,Bing Maps,country
 8.5307598,0.976809,Togo,Togo,,Bing Maps,country
 -21.1739311,-175.1920471,Tonga,Tonga,,Bing Maps,country
-10.4237452,-61.2965317,Trinidad And Tobago,Trinidad and Tobago,,Bing Maps,country
+10.4237452,-61.2965317,Trinidad and Tobago,Trinidad and Tobago,,Bing Maps,country
 34.1144638,9.5719872,Tunisia,Tunisia,,Bing Maps,country
 39.0510101,34.9303398,Turkey,Turkey,,Bing Maps,country
 39.1941376,59.1786537,Turkmenistan,Turkmenistan,,Bing Maps,country
