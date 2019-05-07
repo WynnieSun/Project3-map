@@ -9,9 +9,11 @@ var un17 = d3.csv("unemR17.csv");
 var un16 = d3.csv("unemR16.csv");
 var un15 = d3.csv("unemR15.csv");
 var gps = d3.csv("GPS.csv");
+var neutral = d3.csv("neutral country.csv");
+var death = d3.csv("massive death.csv");
 //console.log(data18);
 
-Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,gps])
+Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,gps,neutral,death])
        .then(function(values)
        {
          //console.log(values);
@@ -26,6 +28,8 @@ Promise.all([map,data18,data17,data16,data15,crime,un18,un17,un16,un15,gps])
          var unem16 = values[8];
          var unem15 = values[9];
          var gps = values[10];
+         var neutralC = values[11];
+         var death = values[12];
          //console.log(geoData)
          //console.log(unem16);
 
@@ -86,6 +90,20 @@ var crimeDict= {};
 crime.forEach(function(country){
   crimeDict[country.Country.trim()]=country;
 });
+
+///////////neutral country////////
+var neutralDict= {};
+neutralC.forEach(function(country){
+  neutralDict[country.Country.trim()]=country;
+});
+
+/////////////massive death////////
+var deathDict= {};
+death.forEach(function(country){
+  deathDict[country.Country.trim()]=country;
+});
+
+
         //console.log(crimeDict);
         //console.log(gpsDict)
         // console.log(countryDict18)
@@ -103,6 +121,8 @@ crime.forEach(function(country){
          feature.properties.UR15 = unDict15[feature.properties.SOVEREIGNT];
          feature.properties.GPS = gpsDict[feature.properties.SOVEREIGNT];
          feature.properties.crime = crimeDict[feature.properties.SOVEREIGNT];
+         feature.properties.neutral = neutralDict[feature.properties.SOVEREIGNT];
+         feature.properties.death = deathDict[feature.properties.SOVEREIGNT];
          })
         console.log(geoData);
 
@@ -164,7 +184,7 @@ var diaLegend = svg.append("g")
           .attr("id", "dialegend")
           .attr("transform","translate(0,-15)")
 
-////////////interactive legend - ur////////
+////////////interactive legend - tri////////
 var inter_tri = svg.append("g")
                    .attr("transform","translate(690,5)")
     inter_tri.attr("class","inter_tri")
@@ -189,7 +209,7 @@ var inter_dia = svg.append("g")
           .attr("y",180)
           .attr("width",20)
           .attr("height",20)
-          .attr("fill","#92c5de")
+          .attr("fill","#bcbddc")
     inter_dia.append("text")
           .text( "Healthy life expectancy at birth")
           .attr("x",890)
@@ -218,16 +238,47 @@ var inter_ci= svg.append("g")
     inter_ci.attr("class","inter_ci")
           .append("rect")
           .attr("x",850)
-          .attr("y",345)
+          .attr("y",320)
           .attr("width",20)
           .attr("height",20)
-          .attr("fill","red")
+          .attr("fill","#ef3b2c")
     inter_ci.append("text")
           .text( "Crime Index")
           .attr("x",890)
-          .attr("y",365)
+          .attr("y",340)
           .attr("font-size","20px")
 
+////////////interactive legend - star///////
+var inter_star= svg.append("g")
+                   .attr("transform","translate(690,5)")
+    inter_star.attr("class","inter_star")
+          .append("rect")
+          .attr("x",850)
+          .attr("y",355)
+          .attr("width",20)
+          .attr("height",20)
+          .attr("fill","#92c5de")
+    inter_star.append("text")
+          .text("Neutral Country")
+          .attr("x",890)
+          .attr("y",375)
+          .attr("font-size","20px")
+
+//////////////interactive legend - death///////
+var inter_death= svg.append("g")
+                   .attr("transform","translate(690,5)")
+    inter_death.attr("class","inter_death")
+          .append("rect")
+          .attr("x",850)
+          .attr("y",390)
+          .attr("width",20)
+          .attr("height",20)
+          .attr("fill","black")
+    inter_death.append("text")
+          .text("Massive Death")
+          .attr("x",890)
+          .attr("y",410)
+          .attr("font-size","20px")
 
 ///////////function draw map////////
 var drawMap = function(year,geoData)
@@ -357,12 +408,21 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   else{
                   var happinessIndex = parseFloat(d.properties.data18.LifeLadder).toFixed(2)
                 }
-
+                  if(d.properties.neutral.neutral == ""){
              			tooltip.html(
              			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
                   "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
              			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-                )}
+                )
+               }
+               else{
+                 tooltip.html(
+                 "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                 "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                 "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                 "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+               )
+             }}
               else if (year == 2017){
                 if (d.properties.data17.LifeLadder == "Undefined"){
                   var happinessIndex = d.properties.data17.LifeLadder
@@ -397,11 +457,21 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
             var happinessIndex = parseFloat(d.properties.data15.LifeLadder).toFixed(2)
           }
 
-            tooltip.html(
-            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-            "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
-            "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-          )}
+          if(d.properties.neutral.neutral == ""){
+          tooltip.html(
+          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+          "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+          "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+        )
+       }
+       else{
+         tooltip.html(
+         "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+         "<p><strong>" + "Neutral Country" + "</strong></p>" +
+         "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+       )
+     }}
 
               	tooltip.style("left", (d3.event.pageX + 15) + "px")
              			     .style("top", (d3.event.pageY - 28) + "px");
@@ -438,9 +508,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   		d3.select(".year")
                         .text(year)
 //d3.select(".gdp").remove()
-//(".unemployment").remove()
-
-                  		drawMap(year,geoData);
+                  		updateMap(year,geoData);
                   	}
 
                   slider.attr("type", "range")
@@ -461,6 +529,12 @@ inter_tri.on("click",function(){
        // Change the opacity: from 0 to 1 or from 1 to 0
        d3.selectAll(".gdp").transition().style("opacity", currentOpacity == 1 ? 0:1)
        d3.selectAll(".inter_tri").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+       if (currentOpacity == 1){
+         d3.select(".gdp").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".gdp").attr("pointer-events", "auto");
+       }
             })
 ////////draw triangle//////////////
 ////////minor tooltip////////////
@@ -883,7 +957,15 @@ inter_ur.on("click",function(){
        // Change the opacity: from 0 to 1 or from 1 to 0
        d3.selectAll(".unemployment").transition().style("opacity", currentOpacity == 1 ? 0:1)
        d3.selectAll(".inter_ur").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
-            })
+
+       if (currentOpacity == 1){
+         d3.select(".unemployment").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".unemployment").attr("pointer-events", "auto");
+       }
+
+      })
 
 ///////////////crime index//////////
 var tooltipOther3 = d3.select("body")
@@ -940,7 +1022,7 @@ groupCI.selectAll("circle")
        .attr("fill", "red")
        .attr("opacity",0.5)
 //       .attr("transform","translate(760,475)")
-       .attr('transform',function(d,i){ return "translate("+(triDataX[i]+10)+","+(triDataY[i]-10)+")"; })
+       .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-20)+")"; })
 
        .on("mouseover", function(d){
          //console.log(d.properties.GPS)
@@ -1017,7 +1099,15 @@ inter_ci.on("click",function(){
        // Change the opacity: from 0 to 1 or from 1 to 0
        d3.selectAll(".crime").transition().style("opacity", currentOpacity == 1 ? 0:1)
        d3.selectAll(".inter_ci").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
-            })
+
+       if (currentOpacity == 1){
+         d3.select(".crime").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".crime").attr("pointer-events", "auto");
+       }
+
+      })
 
 /////////////life expectancy////////
 var tooltipOther4 = d3.select("body")
@@ -1202,7 +1292,1102 @@ inter_dia.on("click",function(){
        // Change the opacity: from 0 to 1 or from 1 to 0
        d3.selectAll(".lifeE").transition().style("opacity", currentOpacity == 1 ? 0:1)
        d3.selectAll(".inter_dia").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
-            })
 
+       if (currentOpacity == 1){
+         d3.select(".lifeE").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".lifeE").attr("pointer-events", "auto");
+       }
+
+      })
+////////////neutral country////////
+var star = d3.symbol()
+            .type(d3.symbolStar)
+            .size([50])
+
+var group3 = svg.append('g')
+ .attr("id","neutralC")
+ .classed("neutralC",true);
+
+///////////////draw star////////
+var line3 = group3.selectAll('path')
+    .data(geoData.features)
+    .enter()
+    .append("path")
+    .attr('d', star)
+    .attr("opacity",function(d){
+      if(d.properties.neutral.neutral == "yes"){
+        return 1
+      }
+      else{
+        return 0
+      }
+    })
+    .attr('fill',function(d){
+      if(year == 2015){
+      if (d.properties.neutral.neutral == "yes"){
+        return "red"
+      }}
+    else if(year == 2016){
+    if (d.properties.neutral.neutral == "yes"){
+      return "red"
+    }}
+  else if(year == 2017){
+  if (d.properties.neutral.neutral == "yes"){
+    return "red"
+  }}
+else{
+if (d.properties.neutral.neutral == "yes"){
+  return "red"
+}}
+    })
+    .attr('stroke','#000')
+    .attr('stroke-width',1)
+    .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-25)+")"; })
+
+
+///////neutral country////////
+inter_star.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_star").style("opacity")
+       currentOpacity = d3.selectAll(".neutralC").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".neutralC").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_star").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+       if (currentOpacity == 1){
+         d3.select(".neutralC").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".neutralC").attr("pointer-events", "auto");
+       }
+
+      })
+
+//////////////massive death////////////
+var group4= svg.append('g')
+ .attr("id","death")
+ .classed("death",true);
+
+group4.selectAll('rect')
+    .data(geoData.features)
+    .enter()
+    .append("rect")
+  //  .attr("x",function(d,i){return triDataX[i]})
+  //  .attr("y",function(d,i){return triDataY[i]})
+    .attr("width",10)
+    .attr("height",10)
+    .attr("opacity",function(d){
+      if(year == 2015){
+      if(d.properties.death.D2015 != ""){
+        return 1
+      }
+      else{
+        return 0
+      }
+    }
+    else if(year == 2016){
+    if(d.properties.death.D2016 != ""){
+      return 1
+    }
+    else{
+      return 0
+    }
+  }
+  else if(year == 2017){
+  if(d.properties.death.D2017 != ""){
+    return 1
+  }
+  else{
+    return 0
+  }
+}
+else{
+if(d.properties.death.D2018 != ""){
+  return 1
+}
+else{
+  return 0
+}
+}
+  })
+    .attr('fill',function(d){
+      if(year == 2015){
+      if (d.properties.death.D2015 != ""){
+        return "black"
+      }}
+    else if(year == 2016){
+    if (d.properties.death.D2016 != ""){
+      return "black"
+    }}
+  else if(year == 2017){
+  if (d.properties.death.D2017 != ""){
+    return "black"
+  }}
+else{
+if (d.properties.death.D2018 != ""){
+  return "black"
+}}
+    })
+    .attr('stroke','#000')
+    .attr('stroke-width',1)
+    .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-25)+")"; })
+
+
+///////massive death////////
+inter_death.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_death").style("opacity")
+       currentOpacity = d3.selectAll(".death").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".death").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_death").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+       if (currentOpacity == 1){
+         d3.select(".death").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".death").attr("pointer-events", "auto");
+       }
+
+      })
 
  };
+
+//////////update layout//////////
+var updateMap = function(year, geoData){
+  ////////projection//////////
+  var projection = d3.geoEqualEarth()
+                     .translate([screen.width/2,screen.height/2])
+                     .scale([300]);
+  var geoGenerator = d3.geoPath()
+                       .projection(projection)
+
+  //////////color scale///////////
+  var color = d3.scaleThreshold()
+    .domain([2,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9])
+    .range(["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2","#ceecca","#b8e3b6",
+    "#9ad8bb","#cce9ef","#b2dbea","#96c8e0","#6da3cc","#ccc"])
+  var legendText = [2,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,"Undefined"];
+  var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2","#ceecca",
+    "#b8e3b6","#9ad8bb","#cce9ef","#b2dbea","#96c8e0","#6da3cc","#ccc"];
+
+  //////////draw area///////////////
+  var tooltip = d3.select("body")
+                  .append("div")
+                 	.attr("class", "tooltip")
+               	  .style("opacity", 0);
+
+            d3.select("#countries")
+                     .selectAll("path")
+                     .attr("d",geoGenerator)
+                     .attr("id", function(d){
+                       return d.properties.SOVEREIGNT
+                     })
+                     .attr("stroke","black")
+                     .attr("stroke-width", 0.5)
+                     .attr("fill",function(d){
+                     if (year == 2018){
+                       if (d.properties.data18.LifeLadder){
+
+                         return color(d.properties.data18.LifeLadder);
+                       }
+                       else{
+                         return "#ccc";
+                       }}
+                      else if (year == 2017){
+                         if (d.properties.data17.LifeLadder){
+                           return color(d.properties.data17.LifeLadder);
+                         }
+                         else{
+                           return "#ccc";
+                         }}
+                        else if (year == 2016){
+                           if (d.properties.data16.LifeLadder){
+                             return color(d.properties.data16.LifeLadder);
+                           }
+                           else{
+                             return "#ccc";
+                           }}
+                          else{
+                             if (d.properties.data15.LifeLadder){
+                               return color(d.properties.data15.LifeLadder);
+                             }
+                             else{
+                               return "#ccc";
+                             }}
+                     })
+                     .attr("opacity",1)
+  /////////////change when mouseover and mouseout//////////////
+                     .on("mouseover", function(d){
+
+                      d3.select(this)
+                        .attr("opacity",1)
+                        .attr("stroke-width", 1);
+
+                  })
+                  .on("mouseout", function(d){
+                    // d3.select(this.parentNode)
+                    //   .selectAll("#nameLabel")
+                    //   .remove()
+
+                  d3.select(this)
+                    .attr("opacity",1)
+                    .attr("stroke-width", 0.5);
+               })
+//////////////tooltip///////////////
+                  .on("mouseover", function(d) {
+                           tooltip.transition()
+                                   .duration(250)
+                                   .style("opacity", 1);
+                             if (year == 2018){
+                                 if (d.properties.data18.LifeLadder == "Undefined"){
+                                   var happinessIndex = d.properties.data18.LifeLadder
+                                 }
+                                 else{
+                                 var happinessIndex = parseFloat(d.properties.data18.LifeLadder).toFixed(2)
+                               }
+
+                               if(d.properties.neutral.neutral == ""){
+                          			tooltip.html(
+                          			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                          			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                             )
+                            }
+                            else{
+                              tooltip.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                              "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                              "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                            )
+                          }}
+                       else if (year == 2017){
+                               if (d.properties.data17.LifeLadder == "Undefined"){
+                                 var happinessIndex = d.properties.data17.LifeLadder
+                               }
+                               else{
+                               var happinessIndex = parseFloat(d.properties.data17.LifeLadder).toFixed(2)
+                             }
+
+                             if(d.properties.neutral.neutral == ""){
+                        			tooltip.html(
+                        			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                        			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                           )
+                          }
+                          else{
+                            tooltip.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                            "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                            "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                          )
+                        }}
+                       else if (year == 2016){
+                             if (d.properties.data16.LifeLadder == "Undefined"){
+                               var happinessIndex = d.properties.data16.LifeLadder
+                             }
+                             else{
+                             var happinessIndex = parseFloat(d.properties.data16.LifeLadder).toFixed(2)
+                           }
+
+                           if(d.properties.neutral.neutral == ""){
+                      			tooltip.html(
+                      			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                      			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                         )
+                        }
+                        else{
+                          tooltip.html(
+                          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                          "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                          "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                          "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                        )
+                      }}
+                     else {
+                           if (d.properties.data15.LifeLadder == "Undefined"){
+                             var happinessIndex = d.properties.data15.LifeLadder
+                           }
+                           else{
+                           var happinessIndex = parseFloat(d.properties.data15.LifeLadder).toFixed(2)
+                         }
+
+                         if(d.properties.neutral.neutral == ""){
+                    			tooltip.html(
+                    			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                    			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                       )
+                      }
+                      else{
+                        tooltip.html(
+                        "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                        "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                        "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                        "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                      )
+                    }}
+
+                              tooltip.style("left", (d3.event.pageX + 15) + "px")
+                                       .style("top", (d3.event.pageY - 28) + "px");
+                                })
+
+
+                                  .on("mouseout", function(d) {
+                           tooltip.transition()
+                                  .duration(250)
+                                  .style("opacity", 0);
+                                });
+
+  ///////////centroid///////////
+               var triDataX = geoData.features.map(function(d){
+                  return geoGenerator.centroid(d)[0] - 10})
+               var triDataY = geoData.features.map(function(d){
+                  return geoGenerator.centroid(d)[1] +5})
+
+  ///////////update///////////////
+           var update = function(year){
+
+                  	slider.property("value", year);
+                    		d3.select(".year")
+                          .text(year)
+
+  // d3.select(".gdp").selectAll("path").remove()
+
+                    		updateMap(year,geoData);
+                    	}
+
+                    slider.attr("type", "range")
+                    			.attr("min", 2015)
+                    			.attr("max", 2018)
+                    			.attr("step", 1)
+                    			.on("input", function() {
+                    				var year = this.value;
+
+                    				update(year);
+                    			});
+
+  ////////////////GDP///////////////
+  inter_tri.on("click",function(){
+         currentOpacity1 = d3.selectAll(".inter_tri").style("opacity")
+         currentOpacity = d3.selectAll(".gdp").style("opacity")
+         // Change the opacity: from 0 to 1 or from 1 to 0
+         d3.selectAll(".gdp").transition().style("opacity", currentOpacity == 1 ? 0:1)
+         d3.selectAll(".inter_tri").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+         if (currentOpacity == 1){
+           d3.select(".gdp").attr("pointer-events", "none");
+         }
+         else{
+           d3.select(".gdp").attr("pointer-events", "auto");
+         }
+              })
+  ////////draw triangle//////////////
+  ////////minor tooltip////////////
+  var tooltipOther = d3.select(".tooltipOther")
+
+                      var triangle = d3.symbol()
+                                  .type(d3.symbolTriangle)
+                                  .size([50])//function(d){ return scale(d.properties.dataGDP15.gdp); });
+
+                      var scale = d3.scaleLinear()
+                                    .domain([1,242])
+                                    .range([10,900]);
+
+        var triColors = d3.scaleThreshold()
+                          .domain([6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11])
+                          .range(["#d73027", "#f46d43", "#fdae61", "#fee090", "#ffffbf",
+                          "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"]);
+
+        var triLegendText = [6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5];
+
+        var triLegendColors = ["#d73027", "#f46d43", "#fdae61", "#fee090", "#ffffbf",
+                          "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"];
+
+        var group = d3.select(".gdp")
+
+  /////////////variable - gdp//////////////
+  /////15/////
+                            var triData15 = geoData.features.map(function(d){
+
+                              if(d.properties.data15.Log_GDP_per_capita != ""){
+                                var gdpNum = parseFloat(d.properties.data15.Log_GDP_per_capita).toFixed(2)}
+                              else{
+                                var gdpNum = 1}  //"Undefined"
+
+                             return {
+                                     sovereignty:d.properties.SOVEREIGNT,
+                                     gdp:gdpNum
+                                    }
+                              })
+                              var gdpDict15 = {};
+                              triData15.forEach(function(country){
+
+                                gdpDict15[country.sovereignty.trim()]=country;
+                              });
+  ////////16//////////
+                              var triData16 = geoData.features.map(function(d){
+
+                                if(d.properties.data16.Log_GDP_per_capita != ""){
+                                  var gdpNum = parseFloat(d.properties.data16.Log_GDP_per_capita).toFixed(2)}
+                                else{
+                                  var gdpNum = 1}  //"Undefined"
+
+                               return {
+                                       sovereignty:d.properties.SOVEREIGNT,
+                                       gdp:gdpNum
+                                      }
+                                })
+                                var gdpDict16 = {};
+                                triData16.forEach(function(country){
+                                  gdpDict16[country.sovereignty.trim()]=country;
+                                });
+  /////////17/////////
+  var triData17 = geoData.features.map(function(d){
+
+    if(d.properties.data17.Log_GDP_per_capita != ""){
+      var gdpNum = parseFloat(d.properties.data17.Log_GDP_per_capita).toFixed(2)}
+    else{
+      var gdpNum = 1}  //"Undefined"
+
+   return {
+           sovereignty:d.properties.SOVEREIGNT,
+           gdp:gdpNum
+          }
+    })
+    var gdpDict17 = {};
+    triData17.forEach(function(country){
+      gdpDict17[country.sovereignty.trim()]=country;
+    });
+
+  ///////////18////////
+  var triData18 = geoData.features.map(function(d){
+
+    if(d.properties.data18.Log_GDP_per_capita != ""){
+      var gdpNum = parseFloat(d.properties.data18.Log_GDP_per_capita).toFixed(2)}
+    else{
+      var gdpNum = 1}  //"Undefined"
+
+   return {
+           sovereignty:d.properties.SOVEREIGNT,
+           gdp:gdpNum
+          }
+    })
+    var gdpDict18 = {};
+    triData18.forEach(function(country){
+      gdpDict18[country.sovereignty.trim()]=country;
+    });
+  ///////////bind data///////////
+                            geoData.features.forEach(function(feature)
+                             {
+                             feature.properties.dataGDP18 = gdpDict18[feature.properties.SOVEREIGNT];
+                             feature.properties.dataGDP17 = gdpDict17[feature.properties.SOVEREIGNT];
+                             feature.properties.dataGDP16 = gdpDict16[feature.properties.SOVEREIGNT];
+                             feature.properties.dataGDP15 = gdpDict15[feature.properties.SOVEREIGNT];
+                             })
+
+                             //console.log(geoData);
+                             console.log(year);
+
+                            var line = group.selectAll('path')
+                                .attr('d', triangle)
+                                .attr("opacity",1)
+                                .attr('fill',function(d){
+                                  if(year == 2015){
+                                  if (d.properties.dataGDP15.gdp == 1){
+                                    return "#ccc"
+                                  }
+                                  else{
+                                  return triColors(d.properties.dataGDP15.gdp)}
+                                }
+                                else if(year == 2016){
+                                if (d.properties.dataGDP16.gdp == 1){
+                                  return "#ccc"
+                                }
+                                else{
+                                return triColors(d.properties.dataGDP16.gdp)}
+                              }
+                              else if(year == 2017){
+                              if (d.properties.dataGDP17.gdp == 1){
+                                return "#ccc"
+                              }
+                              else{
+                              return triColors(d.properties.dataGDP17.gdp)}
+                            }
+                            else{
+                            if (d.properties.dataGDP18.gdp == 1){
+                              return "#ccc"
+                            }
+                            else{
+                            return triColors(d.properties.dataGDP18.gdp)}
+                          }
+                                })
+                                .attr('stroke','#000')
+                                .attr('stroke-width',1)
+                                .attr('transform',function(d,i){ return "translate("+(triDataX[i]+35)+","+(triDataY[i]-25)+")"; })
+
+  //////////////tooltip///////////////
+    line.on("mouseover", function(d) {
+         tooltipOther.transition()
+               			 .duration(250)
+               			 .style("opacity", 1);
+                if (year == 2018){
+                    if (d.properties.dataGDP18.gdp == 1){
+                      var gdp = "Undefined"
+                    }
+                    else{
+                    var gdp = d.properties.dataGDP18.gdp
+                  }
+
+               			tooltipOther.html(
+               			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                    "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+               			"<table><tbody><tr><td class='wide'>Log GDP per Capita: </td><td>" + gdp + "</td></tr></tbody></table>"
+                  )}
+                else if (year == 2017){
+                  if (d.properties.dataGDP17.gdp == 1){
+                    var gdp = "Undefined"
+                  }
+                  else{
+                  var gdp = d.properties.dataGDP17.gdp
+                }
+
+                  tooltipOther.html(
+                  "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                  "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                  "<table><tbody><tr><td class='wide'>Log GDP per Capita: </td><td>" + gdp + "</td></tr></tbody></table>"
+                )}
+              else if (year == 2016){
+                if (d.properties.dataGDP16.gdp == 1){
+                  var gdp = "Undefined"
+                }
+                else{
+                var gdp = d.properties.dataGDP16.gdp
+              }
+
+                tooltipOther.html(
+                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                "<table><tbody><tr><td class='wide'>Log GDP per Capita: </td><td>" + gdp + "</td></tr></tbody></table>"
+              )}
+            else {
+              if (d.properties.dataGDP15.gdp == 1){
+                var gdp = "Undefined"
+              }
+              else{
+              var gdp = d.properties.dataGDP15.gdp
+            }
+
+              tooltipOther.html(
+              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+              "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+              "<table><tbody><tr><td class='wide'>Log GDP per Capita: </td><td>" + gdp + "</td></tr></tbody></table>"
+            )}
+
+                	tooltipOther.style("left", (50) + "px")
+               			     .style("top", (650) + "px");
+               		})
+
+
+    .on("mouseout", function(d) {
+        tooltipOther.transition()
+               			.duration(250)
+               			.style("opacity", 0);
+               		});
+
+  /////////////////Unemployment Rate//////////////
+  var tooltipOther2 = d3.select(".tooltipOther2")
+
+  var groupUR = d3.select(".unemployment")
+
+  groupUR.selectAll("circle")
+         .attr("cx",function(d){
+           //console.log(d.properties);
+           //console.log(d.properties.GPS.longitude);
+           return (d.properties.GPS.longitude*0.08) //* 4.2) //zhai
+         })
+         .attr("cy",function(d){
+           return -(d.properties.GPS.latitude*0.15) //* 5.5) //gao
+         })
+         .attr("r", function(d){
+           if (year == 2015){
+           if (d.properties.UR15.UnemploymentRate != "Undefined"){
+           return Math.sqrt(parseInt(d.properties.UR15.UnemploymentRate*20))}
+           else{
+             return 0
+           }
+         }
+         else if (year == 2016){
+         if (d.properties.UR16.UnemploymentRate != "Undefined"){
+         return Math.sqrt(parseInt(d.properties.UR16.UnemploymentRate*20))}
+         else{
+           return 0
+         }
+       }
+       else if (year == 2017){
+       if (d.properties.UR17.UnemploymentRate != "Undefined"){
+       return Math.sqrt(parseInt(d.properties.UR17.UnemploymentRate*20))}
+       else{
+         return 0
+       }
+     }
+     else{
+     if (d.properties.UR18.UnemploymentRate != "Undefined"){
+     return Math.sqrt(parseInt(d.properties.UR18.UnemploymentRate*20))}
+     else{
+       return 0
+     }
+   }
+         })
+         .attr("fill", "orange")
+         .attr("opacity",0.5)
+  //       .attr("transform","translate(760,475)")
+         .attr('transform',function(d,i){ return "translate("+(triDataX[i]+35)+","+(triDataY[i]-25)+")"; })
+
+         .on("mouseover", function(d){
+           //console.log(d.properties.GPS)
+                tooltipOther2.transition()
+                             .duration(250)
+                             .style("opacity", 1);
+                       if (year == 2015){
+                           if (d.properties.UR15.UnemploymentRate == "Undefined"){
+                             var ur = "Undefined"
+                           }
+                           else{
+                           var ur = d.properties.UR15.UnemploymentRate
+                         }
+
+                            tooltipOther2.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                         )}
+                         else if (year == 2016){
+                             if (d.properties.UR16.UnemploymentRate == "Undefined"){
+                               var ur = "Undefined"
+                             }
+                             else{
+                             var ur = d.properties.UR16.UnemploymentRate
+                           }
+
+                              tooltipOther2.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                           )}
+                           else if (year == 2017){
+                               if (d.properties.UR17.UnemploymentRate == "Undefined"){
+                                 var ur = "Undefined"
+                               }
+                               else{
+                               var ur = d.properties.UR17.UnemploymentRate
+                             }
+
+                                tooltipOther2.html(
+                                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                                "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                             )}
+                             else{
+                                 if (d.properties.UR18.UnemploymentRate == "Undefined"){
+                                   var ur = "Undefined"
+                                 }
+                                 else{
+                                 var ur = d.properties.UR18.UnemploymentRate
+                               }
+
+                                  tooltipOther2.html(
+                                  "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                                 "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                                  "<table><tbody><tr><td class='wide'>Unemployment Rate: </td><td>" + ur + "</td></tr></tbody></table>"
+                               )}
+
+                          tooltipOther2.style("left", (50) + "px")
+                            			     .style("top", (650) + "px");
+
+         })
+         .on("mouseout", function(d) {
+               tooltipOther2.transition()
+                      			.duration(250)
+                      			.style("opacity", 0);
+                      		});
+
+  ///////UR////////
+  inter_ur.on("click",function(){
+         currentOpacity1 = d3.selectAll(".inter_ur").style("opacity")
+         currentOpacity = d3.selectAll(".unemployment").style("opacity")
+         // Change the opacity: from 0 to 1 or from 1 to 0
+         d3.selectAll(".unemployment").transition().style("opacity", currentOpacity == 1 ? 0:1)
+         d3.selectAll(".inter_ur").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+         if (currentOpacity == 1){
+           d3.select(".unemployment").attr("pointer-events", "none");
+         }
+         else{
+           d3.select(".unemployment").attr("pointer-events", "auto");
+         }
+              })
+
+  ///////////////crime index//////////
+  var tooltipOther3 = d3.select(".tooltipOther3")
+
+  var groupCI = d3.select(".crime")
+
+  groupCI.selectAll("circle")
+         .attr("cx",function(d){
+           //console.log(d.properties);
+           //console.log(d.properties.GPS.longitude);
+           return (d.properties.GPS.longitude*0.08) //* 4.2) //zhai
+         })
+         .attr("cy",function(d){
+           return -(d.properties.GPS.latitude*0.15) //* 5.5) //gao
+         })
+         .attr("r", function(d){
+           if (year == 2015){
+           if (d.properties.crime.CrimeIndex_15 != "Undefined"){
+           return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_15*5))}
+           else{
+             return 0
+           }
+         }
+         else if (year == 2016){
+         if (d.properties.crime.CrimeIndex_16 != "Undefined"){
+         return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_16*5))}
+         else{
+           return 0
+         }
+       }
+       else if (year == 2017){
+       if (d.properties.crime.CrimeIndex_17 != "Undefined"){
+       return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_17*5))}
+       else{
+         return 0
+       }
+     }
+     else{
+     if (d.properties.crime.CrimeIndex_18 != "Undefined"){
+     return Math.sqrt(parseInt(d.properties.crime.CrimeIndex_18*5))}
+     else{
+       return 0
+     }
+   }
+         })
+         .attr("fill", "red")
+         .attr("opacity",0.5)
+  //       .attr("transform","translate(760,475)")
+         .attr('transform',function(d,i){ return "translate("+(triDataX[i]+10)+","+(triDataY[i]-10)+")"; })
+
+         .on("mouseover", function(d){
+           //console.log(d.properties.GPS)
+                tooltipOther3.transition()
+                             .duration(250)
+                             .style("opacity", 1);
+                       if (year == 2015){
+                           if (d.properties.crime.CrimeIndex_15 == "Undefined"){
+                             var ci = "Undefined"
+                           }
+                           else{
+                           var ci = d.properties.crime.CrimeIndex_15
+                         }
+
+                            tooltipOther3.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                         )}
+                         else if (year == 2016){
+                             if (d.properties.crime.CrimeIndex_16 == "Undefined"){
+                               var ci = "Undefined"
+                             }
+                             else{
+                             var ci = d.properties.crime.CrimeIndex_16
+                           }
+
+                              tooltipOther3.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                           )}
+                           else if (year == 2017){
+                               if (d.properties.crime.CrimeIndex_17 == "Undefined"){
+                                 var ci = "Undefined"
+                               }
+                               else{
+                               var ci = d.properties.crime.CrimeIndex_17
+                             }
+
+                                tooltipOther3.html(
+                                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                                "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                             )}
+                             else{
+                                 if (d.properties.crime.CrimeIndex_18 == "Undefined"){
+                                   var ci = "Undefined"
+                                 }
+                                 else{
+                                 var ci = d.properties.crime.CrimeIndex_18
+                               }
+
+                                  tooltipOther3.html(
+                                  "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                                 "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                                  "<table><tbody><tr><td class='wide'>Crime Index: </td><td>" + ci + "</td></tr></tbody></table>"
+                               )}
+
+                          tooltipOther3.style("left", (50) + "px")
+                            			     .style("top", (650) + "px");
+
+         })
+         .on("mouseout", function(d) {
+               tooltipOther3.transition()
+                      			.duration(250)
+                      			.style("opacity", 0);
+                      		});
+  /////////Crime Index///////////
+  ////////////////GDP///////////////
+  inter_ci.on("click",function(){
+         currentOpacity1 = d3.selectAll(".inter_ci").style("opacity")
+         currentOpacity = d3.selectAll(".crime").style("opacity")
+         // Change the opacity: from 0 to 1 or from 1 to 0
+         d3.selectAll(".crime").transition().style("opacity", currentOpacity == 1 ? 0:1)
+         d3.selectAll(".inter_ci").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+         if (currentOpacity == 1){
+           d3.select(".crime").attr("pointer-events", "none");
+         }
+         else{
+           d3.select(".crime").attr("pointer-events", "auto");
+         }
+              })
+
+  /////////////life expectancy////////
+  var tooltipOther4 = d3.select(".tooltipOther4")
+
+  var diamond = d3.symbol()
+              .type(d3.symbolDiamond)
+              .size([50])//function(d){ return scale(d.properties.data15.Healthy_life_expectancy_at_birth); });
+
+  var scale2 = d3.scaleLinear()
+                .domain([1,242])
+                .range([10,900]);
+
+  var diaColors = d3.scaleThreshold()
+      .domain([30,35,40,45,50,55,60,65,70,75,80])
+      .range([ "#f46d43", "#fdae61", "#fee090", "#ffffbf",
+      "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"]);
+
+  var diaLegendText = [30,35,40,45,50,55,60,65,70,75,80];
+
+  var diaLegendColors = ["#f46d43", "#fdae61", "#fee090", "#ffffbf",
+      "#d9ef8b", "#a6d96a", "#e0f3f8", "#abd9e9", "#74add1", "#4575b4","#ccc"];
+
+  var group2 = d3.select(".lifeE")
+
+  ///////////////draw diamond////////
+  var line2 = group2.selectAll('path')
+      .attr('d', diamond)
+      .attr("opacity",1)
+      .attr('fill',function(d){
+        if(year == 2015){
+        if (d.properties.data15.Healthy_life_expectancy_at_birth == ""){
+          return "#ccc"
+        }
+        else{
+        return diaColors(d.properties.data15.Healthy_life_expectancy_at_birth)}
+      }
+      else if(year == 2016){
+      if (d.properties.data16.Healthy_life_expectancy_at_birth == ""){
+        return "#ccc"
+      }
+      else{
+      return diaColors(d.properties.data16.Healthy_life_expectancy_at_birth)}
+    }
+    else if(year == 2017){
+    if (d.properties.data17.Healthy_life_expectancy_at_birth == ""){
+      return "#ccc"
+    }
+    else{
+    return diaColors(d.properties.data17.Healthy_life_expectancy_at_birth)}
+  }
+  else{
+  if (d.properties.data18.Healthy_life_expectancy_at_birth == ""){
+    return "#ccc"
+  }
+  else{
+  return diaColors(d.properties.data18.Healthy_life_expectancy_at_birth)}
+  }
+      })
+      .attr('stroke','#000')
+      .attr('stroke-width',1)
+      .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-30)+")"; })
+
+      .on("mouseover", function(d) {
+        tooltipOther4.transition()
+               			 .duration(250)
+               			 .style("opacity", 1);
+                if (year == 2018){
+                    if (d.properties.data18.Healthy_life_expectancy_at_birth == ""){
+                      var life = "Undefined"
+                    }
+                    else{
+                    var life = parseFloat(d.properties.data18.Healthy_life_expectancy_at_birth).toFixed(1)
+                  }
+
+               			tooltipOther4.html(
+               			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                    "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+               			"<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+                  )}
+                else if (year == 2017){
+                  if (d.properties.data17.Healthy_life_expectancy_at_birth == ""){
+                    var life = "Undefined"
+                  }
+                  else{
+                  var life = parseFloat(d.properties.data17.Healthy_life_expectancy_at_birth).toFixed(1)
+                  }
+
+                  tooltipOther4.html(
+                  "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                  "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                  "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+                )}
+              else if (year == 2016){
+                if (d.properties.data16.Healthy_life_expectancy_at_birth == ""){
+                  var life = "Undefined"
+                }
+                else{
+                var life = parseFloat(d.properties.data16.Healthy_life_expectancy_at_birth).toFixed(1)
+                }
+
+                tooltipOther4.html(
+                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+              )}
+            else {
+              if (d.properties.data15.Healthy_life_expectancy_at_birth == ""){
+                var life = "Undefined"
+              }
+              else{
+              var life = parseFloat(d.properties.data15.Healthy_life_expectancy_at_birth).toFixed(1)
+              }
+
+              tooltipOther4.html(
+              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+              "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+              "<table><tbody><tr><td class='wide'>Healthy life expectancy at birth: </td><td>" + life + "</td></tr></tbody></table>"
+            )}
+
+                	tooltipOther4.style("left", (50) + "px")
+               			          .style("top", (650) + "px");
+          	})
+
+
+    .on("mouseout", function(d) {
+        tooltipOther4.transition()
+               			.duration(250)
+               			.style("opacity", 0);
+               		});
+
+  ///////life expectancy////////
+  inter_dia.on("click",function(){
+         currentOpacity1 = d3.selectAll(".inter_dia").style("opacity")
+         currentOpacity = d3.selectAll(".lifeE").style("opacity")
+         // Change the opacity: from 0 to 1 or from 1 to 0
+         d3.selectAll(".lifeE").transition().style("opacity", currentOpacity == 1 ? 0:1)
+         d3.selectAll(".inter_dia").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+         if (currentOpacity == 1){
+           d3.select(".lifeE").attr("pointer-events", "none");
+         }
+         else{
+           d3.select(".lifeE").attr("pointer-events", "auto");
+         }
+              })
+
+//////////////massive death////////////
+var group4= svg.select(".death")
+
+group4.selectAll('rect')
+    .attr("width",10)
+    .attr("height",10)
+    .attr("opacity",function(d){
+      if(year == 2015){
+      if(d.properties.death.D2015 != ""){
+        return 1
+      }
+      else{
+        return 0
+      }
+    }
+    else if(year == 2016){
+    if(d.properties.death.D2016 != ""){
+      return 1
+    }
+    else{
+      return 0
+    }
+  }
+  else if(year == 2017){
+  if(d.properties.death.D2017 != ""){
+    return 1
+  }
+  else{
+    return 0
+  }
+}
+else{
+if(d.properties.death.D2018 != ""){
+  return 1
+}
+else{
+  return 0
+}
+}
+  })
+    .attr('fill',function(d){
+      if(year == 2015){
+      if (d.properties.death.D2015 != ""){
+        return "black"
+      }}
+    else if(year == 2016){
+    if (d.properties.death.D2016 != ""){
+      return "black"
+    }}
+  else if(year == 2017){
+  if (d.properties.death.D2017 != ""){
+    return "black"
+  }}
+else{
+if (d.properties.death.D2018 != ""){
+  return "black"
+}}
+    })
+    .attr('stroke','#000')
+    .attr('stroke-width',1)
+    .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-25)+")"; })
+
+
+///////massive death////////
+inter_death.on("click",function(){
+       currentOpacity1 = d3.selectAll(".inter_death").style("opacity")
+       currentOpacity = d3.selectAll(".death").style("opacity")
+       // Change the opacity: from 0 to 1 or from 1 to 0
+       d3.selectAll(".death").transition().style("opacity", currentOpacity == 1 ? 0:1)
+       d3.selectAll(".inter_death").transition().style("opacity", currentOpacity1 == 1 ? 0.5:1)
+
+       if (currentOpacity == 1){
+         d3.select(".death").attr("pointer-events", "none");
+       }
+       else{
+         d3.select(".death").attr("pointer-events", "auto");
+       }
+
+      })
+
+};
