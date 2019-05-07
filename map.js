@@ -307,7 +307,6 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
 
 //////////draw area///////////////
 
-
   var countries = svg.append("g")
                    .attr("id","countries")
                    .selectAll("g")
@@ -408,6 +407,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                   else{
                   var happinessIndex = parseFloat(d.properties.data18.LifeLadder).toFixed(2)
                 }
+                if (d.properties.death.D2018 == ""){
                   if(d.properties.neutral.neutral == ""){
              			tooltip.html(
              			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
@@ -423,6 +423,26 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                  "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
                )
              }}
+             else{
+               if(d.properties.neutral.neutral == ""){
+                tooltip.html(
+                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                "<p><strong>" + d.properties.death.D2018 + "</strong></p>" +
+                "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+             )
+            }
+            else{
+              tooltip.html(
+              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+              "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+              "<p><strong>" + "Neutral Country" + "</strong></p>" +
+              "<p><strong>" + d.properties.death.D2018 + "</strong></p>" +
+              "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+            )
+          }}
+           }
+
               else if (year == 2017){
                 if (d.properties.data17.LifeLadder == "Undefined"){
                   var happinessIndex = d.properties.data17.LifeLadder
@@ -436,6 +456,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                 "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
                 "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
               )}
+
             else if (year == 2016){
               if (d.properties.data16.LifeLadder == "Undefined"){
                 var happinessIndex = d.properties.data16.LifeLadder
@@ -449,29 +470,50 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
               "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
               "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
             )}
+//2015
           else {
             if (d.properties.data15.LifeLadder == "Undefined"){
               var happinessIndex = d.properties.data15.LifeLadder
             }
             else{
-            var happinessIndex = parseFloat(d.properties.data15.LifeLadder).toFixed(2)
+              var happinessIndex = parseFloat(d.properties.data15.LifeLadder).toFixed(2)
           }
 
-          if(d.properties.neutral.neutral == ""){
+          if (d.properties.death.D2015 == ""){
+            if(d.properties.neutral.neutral == ""){
+            tooltip.html(
+            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+            "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+            "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+          )
+         }
+           else{
+           tooltip.html(
+           "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+           "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+           "<p><strong>" + "Neutral Country" + "</strong></p>" +
+           "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+         )
+       }}
+       else{
+         if(d.properties.neutral.neutral == ""){
           tooltip.html(
           "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
           "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+          "<p><strong>" + d.properties.death.D2015 + "</strong></p>" +
           "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-        )
-       }
-       else{
-         tooltip.html(
-         "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
-         "<p><strong>" + "Neutral Country" + "</strong></p>" +
-         "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
        )
-     }}
+      }
+         else{
+        tooltip.html(
+        "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+        "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+        "<p><strong>" + "Neutral Country" + "</strong></p>" +
+        "<p><strong>" + d.properties.death.D2015 + "</strong></p>" +
+        "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+      )
+    }}
+     }
 
               	tooltip.style("left", (d3.event.pageX + 15) + "px")
              			     .style("top", (d3.event.pageY - 28) + "px");
@@ -507,7 +549,7 @@ var legendColors = ["#ec7014","#fe9929","#fec44f","#fee391","#fff7bc","#e8f6e2",
                 	slider.property("value", year);
                   		d3.select(".year")
                         .text(year)
-//d3.select(".gdp").remove()
+
                   		updateMap(year,geoData);
                   	}
 
@@ -1380,6 +1422,7 @@ group4.selectAll('rect')
     .attr("opacity",function(d){
       if(year == 2015){
       if(d.properties.death.D2015 != ""){
+        console.log(d)
         return 1
       }
       else{
@@ -1547,21 +1590,42 @@ var updateMap = function(year, geoData){
                                  var happinessIndex = parseFloat(d.properties.data18.LifeLadder).toFixed(2)
                                }
 
-                               if(d.properties.neutral.neutral == ""){
-                          			tooltip.html(
-                          			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                               "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
-                          			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-                             )
-                            }
+                               if (d.properties.death.D2018 == ""){
+                                 if(d.properties.neutral.neutral == ""){
+                            			tooltip.html(
+                            			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                                 "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                            			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                               )
+                              }
+                              else{
+                                tooltip.html(
+                                "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                                "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                                "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                                "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                              )
+                            }}
                             else{
-                              tooltip.html(
-                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                              "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
-                              "<p><strong>" + "Neutral Country" + "</strong></p>" +
-                              "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                              if(d.properties.neutral.neutral == ""){
+                               tooltip.html(
+                               "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                               "<p><strong>" + d.properties.death.D2018 + "</strong></p>" +
+                               "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
                             )
-                          }}
+                           }
+                           else{
+                             tooltip.html(
+                             "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data18.Year + "</strong></p>" +
+                             "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                             "<p><strong>" + d.properties.death.D2018 + "</strong></p>" +
+                             "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                           )
+                         }}
+                       }
+
                        else if (year == 2017){
                                if (d.properties.data17.LifeLadder == "Undefined"){
                                  var happinessIndex = d.properties.data17.LifeLadder
@@ -1570,21 +1634,42 @@ var updateMap = function(year, geoData){
                                var happinessIndex = parseFloat(d.properties.data17.LifeLadder).toFixed(2)
                              }
 
-                             if(d.properties.neutral.neutral == ""){
-                        			tooltip.html(
-                        			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                             "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
-                        			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-                           )
-                          }
+                             if (d.properties.death.D2017 == ""){
+                               if(d.properties.neutral.neutral == ""){
+                          			tooltip.html(
+                          			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                               "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                          			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                             )
+                            }
+                            else{
+                              tooltip.html(
+                              "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                              "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                              "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                              "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                            )
+                          }}
                           else{
-                            tooltip.html(
-                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                            "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
-                            "<p><strong>" + "Neutral Country" + "</strong></p>" +
-                            "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                            if(d.properties.neutral.neutral == ""){
+                             tooltip.html(
+                             "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                             "<p><strong>" + d.properties.death.D2017 + "</strong></p>" +
+                             "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
                           )
-                        }}
+                         }
+                         else{
+                           tooltip.html(
+                           "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data17.Year + "</strong></p>" +
+                           "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                           "<p><strong>" + d.properties.death.D2017 + "</strong></p>" +
+                           "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                         )
+                       }}
+                     }
+
                        else if (year == 2016){
                              if (d.properties.data16.LifeLadder == "Undefined"){
                                var happinessIndex = d.properties.data16.LifeLadder
@@ -1593,21 +1678,42 @@ var updateMap = function(year, geoData){
                              var happinessIndex = parseFloat(d.properties.data16.LifeLadder).toFixed(2)
                            }
 
-                           if(d.properties.neutral.neutral == ""){
-                      			tooltip.html(
-                      			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                           "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
-                      			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-                         )
-                        }
+                           if (d.properties.death.D2016 == ""){
+                             if(d.properties.neutral.neutral == ""){
+                        			tooltip.html(
+                        			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                             "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                        			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                           )
+                          }
+                          else{
+                            tooltip.html(
+                            "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                            "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                            "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                            "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                          )
+                        }}
                         else{
-                          tooltip.html(
-                          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                          "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
-                          "<p><strong>" + "Neutral Country" + "</strong></p>" +
-                          "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                          if(d.properties.neutral.neutral == ""){
+                           tooltip.html(
+                           "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                           "<p><strong>" + d.properties.death.D2016 + "</strong></p>" +
+                           "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
                         )
-                      }}
+                       }
+                       else{
+                         tooltip.html(
+                         "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                         "<p><strong>" + d.properties.data16.Year + "</strong></p>" +
+                         "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                         "<p><strong>" + d.properties.death.D2016 + "</strong></p>" +
+                         "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                       )
+                     }}
+                   }
+
                      else {
                            if (d.properties.data15.LifeLadder == "Undefined"){
                              var happinessIndex = d.properties.data15.LifeLadder
@@ -1616,22 +1722,41 @@ var updateMap = function(year, geoData){
                            var happinessIndex = parseFloat(d.properties.data15.LifeLadder).toFixed(2)
                          }
 
-                         if(d.properties.neutral.neutral == ""){
-                    			tooltip.html(
-                    			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
-                    			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
-                       )
-                      }
+                         if (d.properties.death.D2015 == ""){
+                           if(d.properties.neutral.neutral == ""){
+                      			tooltip.html(
+                      			"<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                           "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                      			"<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                         )
+                        }
+                        else{
+                          tooltip.html(
+                          "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                          "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                          "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                          "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                        )
+                      }}
                       else{
-                        tooltip.html(
-                        "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
-                        "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
-                        "<p><strong>" + "Neutral Country" + "</strong></p>" +
-                        "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                        if(d.properties.neutral.neutral == ""){
+                         tooltip.html(
+                         "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                         "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                         "<p><strong>" + d.properties.death.D2015 + "</strong></p>" +
+                         "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
                       )
-                    }}
-
+                     }
+                     else{
+                       tooltip.html(
+                       "<p><strong>" + d.properties.SOVEREIGNT + "</strong></p>" +
+                       "<p><strong>" + d.properties.data15.Year + "</strong></p>" +
+                       "<p><strong>" + "Neutral Country" + "</strong></p>" +
+                       "<p><strong>" + d.properties.death.D2015 + "</strong></p>" +
+                       "<table><tbody><tr><td class='wide'>Happiness Index: </td><td>" + happinessIndex + "</td></tr></tbody></table>"
+                     )
+                   }}
+                 }
                               tooltip.style("left", (d3.event.pageX + 15) + "px")
                                        .style("top", (d3.event.pageY - 28) + "px");
                                 })
@@ -2079,7 +2204,7 @@ var updateMap = function(year, geoData){
          .attr("fill", "red")
          .attr("opacity",0.5)
   //       .attr("transform","translate(760,475)")
-         .attr('transform',function(d,i){ return "translate("+(triDataX[i]+10)+","+(triDataY[i]-10)+")"; })
+         .attr('transform',function(d,i){ return "translate("+(triDataX[i]+30)+","+(triDataY[i]-20)+")"; })
 
          .on("mouseover", function(d){
            //console.log(d.properties.GPS)
