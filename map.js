@@ -273,7 +273,7 @@ var inter_death= svg.append("g")
           .attr("y",390)
           .attr("width",20)
           .attr("height",20)
-          .attr("fill","black")
+          .attr("fill","#3f007d")
     inter_death.append("text")
           .text("Massive Death")
           .attr("x",890)
@@ -1457,19 +1457,19 @@ else{
     .attr('fill',function(d){
       if(year == 2015){
       if (d.properties.death.D2015 != ""){
-        return "black"
+        return "#3f007d"
       }}
     else if(year == 2016){
     if (d.properties.death.D2016 != ""){
-      return "black"
+      return "#3f007d"
     }}
   else if(year == 2017){
   if (d.properties.death.D2017 != ""){
-    return "black"
+    return "#3f007d"
   }}
 else{
 if (d.properties.death.D2018 != ""){
-  return "black"
+  return "#3f007d"
 }}
     })
     .attr('stroke','#000')
@@ -2478,19 +2478,19 @@ else{
     .attr('fill',function(d){
       if(year == 2015){
       if (d.properties.death.D2015 != ""){
-        return "black"
+        return "#3f007d"
       }}
     else if(year == 2016){
     if (d.properties.death.D2016 != ""){
-      return "black"
+      return "#3f007d"
     }}
   else if(year == 2017){
   if (d.properties.death.D2017 != ""){
-    return "black"
+    return "#3f007d"
   }}
 else{
 if (d.properties.death.D2018 != ""){
-  return "black"
+  return "#3f007d"
 }}
     })
     .attr('stroke','#000')
